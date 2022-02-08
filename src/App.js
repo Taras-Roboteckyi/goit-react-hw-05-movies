@@ -1,70 +1,22 @@
-import { useState } from "react";
-import { nanoid } from "nanoid";
+import { Routes, Route, Navigate } from "react-router-dom";
 
-import ContactForm from "./components/Form/Form";
-import Filter from "./components/Filter/Filter";
-import ContactList from "./components/ContactList/ContactList";
-import useLocalStorage from "./components/Hooks/useLocalStorage";
-
-import { Container } from "./App.global.styled";
-import { TitlePhoneBook, TitleContacts, Section } from "./App.styled";
-
-const LocalStorageKey = "contactsKey";
+import { Layout } from "./components/Layout/Layout";
+import { HomePage } from "./pages/HomePage/HomePage";
+import { MovieDetailsPage } from "./pages/MovieDetailsPage/MovieDetailsPage";
+import { MoviesPage } from "./pages/MoviesPage/MoviesPage";
 
 export default function App() {
-  const [contacts, setContacts] = useLocalStorage(LocalStorageKey, []);
-
-  const [filter, setFilter] = useState("");
-
-  const formSubmitHandler = (data) => {
-    const { name } = data;
-    const normalizedNameContact = name.toLowerCase();
-
-    const newId = { id: nanoid(), ...data };
-
-    findContactName(normalizedNameContact)
-      ? alert(`${name} is already in contacts.`)
-      : setContacts((previousState) => [...previousState, newId]);
-
-    /* console.log(newId); */
-  };
-
-  const findContactName = (nameData) => {
-    return contacts.find(({ name }) => name.toLowerCase() === nameData);
-  };
-
-  const deleteContact = (contactId) => {
-    setContacts((prevState) => prevState.filter(({ id }) => id !== contactId));
-  };
-
-  const changeFilter = (evt) => {
-    setFilter(evt.currentTarget.value);
-  };
-
-  const getFilterContact = () => {
-    const normalizedFilter = filter.toLowerCase();
-    return contacts.filter(({ name }) =>
-      name.toLowerCase().includes(normalizedFilter)
-    );
-  };
-
   return (
-    <Container>
-      <Section>
-        <TitlePhoneBook>Phonebook</TitlePhoneBook>
-        <ContactForm formSubmit={formSubmitHandler}></ContactForm>
-      </Section>
-
-      <Section>
-        <TitleContacts>Contacts</TitleContacts>
-
-        <Filter value={filter} onChange={changeFilter}></Filter>
-
-        <ContactList
-          visibleContact={getFilterContact()}
-          onDeleteContact={deleteContact}
-        ></ContactList>
-      </Section>
-    </Container>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route path="movies" element={<MoviesPage />} />
+        <Route path="movies/:movieId" element={<MovieDetailsPage />}>
+          <Route path="cast" element={<div>cast</div>} />
+          <Route path="reviews" element={<div>reviews</div>} />
+        </Route>
+        <Route path="*" element={<Navigate to="/" />} />
+      </Route>
+    </Routes>
   );
 }

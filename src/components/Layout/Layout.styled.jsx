@@ -1,13 +1,23 @@
-import styled from 'styled-components';
+import { NavLink } from "react-router-dom";
+import styled from "styled-components";
 
-export const ListItemStyle = styled.li`
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 10px;
+export const Wrapper = styled.header`
+  padding: 10px 5px;
+  border-bottom: black solid 1px;
 `;
 
-export const NameContactStyle = styled.p`
-  margin-right: 10px;
+export const Nav = styled.nav`
+  display: flex;
+  justify-content: flex-start;
+`;
+
+export const Link = styled(NavLink)`
+  color: black;
+  text-decoration: none;
+  padding-left: 20px;
+  &.active {
+    color: red;
+  }
 `;
 
 export const ButtonContactStyle = styled.button`

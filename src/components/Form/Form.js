@@ -1,19 +1,11 @@
 import { useState } from "react";
-import { nanoid } from "nanoid";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import {
-  FormPhoneBook,
-  LabelPhoneBook,
-  InputPhoneBook,
-  ButtonPhoneBook,
-} from "./Form.styled";
+import { Form, Label, Input, Button } from "./Form.styled";
 
-export default function ContactForm({ formSubmit }) {
+export default function SearchForm({ formSubmit }) {
   const [name, setName] = useState("");
-  const [number, setNumber] = useState("");
-
-  const nameInputId = nanoid();
-  const numberInputId = nanoid();
 
   const handleNameChange = (event) => {
     event.preventDefault();
@@ -24,32 +16,31 @@ export default function ContactForm({ formSubmit }) {
       case "name":
         setName(value);
         break;
-      case "number":
-        setNumber(value);
-        break;
+
       default:
         console.log(`Field type name - ${name} is not processed`);
+    }
+
+    if (name.trim() === "") {
+      toast.error("Enter the name of the picture");
+      return;
     }
   };
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
 
-    formSubmit({ name, number });
+    formSubmit({ name });
 
     reset();
   };
 
-  const reset = () => {
-    setName("");
-    setNumber("");
-  };
+  const reset = () => setName("");
 
   return (
-    <FormPhoneBook onSubmit={handleSubmit}>
-      <LabelPhoneBook htmlFor={nameInputId}>
-        Name
-        <InputPhoneBook
+    <Form onSubmit={handleSubmit}>
+      <Label>
+        <Input
           type="text"
           name="name"
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -58,24 +49,9 @@ export default function ContactForm({ formSubmit }) {
           autoComplete="off"
           value={name}
           onChange={handleNameChange}
-          id={nameInputId}
         />
-      </LabelPhoneBook>
-      <LabelPhoneBook htmlFor={numberInputId}>
-        Number
-        <InputPhoneBook
-          type="tel"
-          name="number"
-          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-          title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-          required
-          autoComplete="off"
-          value={number}
-          onChange={handleNameChange}
-          id={numberInputId}
-        />
-      </LabelPhoneBook>
-      <ButtonPhoneBook type="submit">Add contact</ButtonPhoneBook>
-    </FormPhoneBook>
+      </Label>
+      <Button type="submit">Search</Button>
+    </Form>
   );
 }
