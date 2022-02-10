@@ -4,12 +4,11 @@
 //import { useState, useEffect } from "react";
 
 //import ContactListItem from '../ContactListItem/ContactListItem';
-
-import { Section, Image } from "./MovieCard.styled";
+import img from "../../images/no-poster1.png";
+import { Section, Image, ImageContainer } from "./MovieCard.styled";
 
 const MovieCard = ({ dataVideo, imageUrl }) => {
   const {
-    backdrop_path,
     poster_path,
     name,
     original_title,
@@ -27,31 +26,31 @@ const MovieCard = ({ dataVideo, imageUrl }) => {
   if (!release_date && !first_air_date) {
     filmYear = "";
   }
-  console.log(genres);
+  //console.log(genres);
 
-  if (genres) {
-    const arrayGenres = genres.map((genre) => genre.name);
-    const nameGenres = arrayGenres[arrayGenres];
-    console.log(arrayGenres);
-  }
+  const isPosterPath = (poster) => {
+    if (poster !== null) {
+      return `${imageUrl}${poster}`;
+    }
+    return `${img}`;
+  };
 
-  //console.log(imageUrl);
+  //console.log(dataVideo);
   return (
     <Section>
-      <Image
-        src={imageUrl + backdrop_path || imageUrl + poster_path}
-        alt=""
-        width="350"
-      />
+      <ImageContainer>
+        <Image src={isPosterPath(poster_path)} alt="" />
+      </ImageContainer>
       <div>
         <h1>
           {original_title || name} ({filmYear.slice(0, 4)})
         </h1>
-        <p>User score: {(vote_average * 100) / 10}%</p>
+        <p>User score: {Math.round((vote_average * 100) / 10)}%</p>
         <h2>Overviev</h2>
         <p>{overview}</p>
         <h3>Genres</h3>
-        <p>{}</p>
+        {/* {genres.length === 0 && <p>No information about genres</p>} */}
+        {genres && <p>{genres.map((genre) => genre.name).join(", ")}</p>}
       </div>
     </Section>
   );

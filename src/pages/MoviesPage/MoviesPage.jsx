@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -9,7 +10,11 @@ import SearchList from "../../components/SearchList/SearchList";
 export const MoviesPage = () => {
   const [movieName, setMovieName] = useState("");
   const [movie, setMovie] = useState([]);
-  console.log(movie);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  searchParams.get("query");
+  //console.log(searchMovie);
 
   useEffect(() => {
     async function searchFetch() {
@@ -27,10 +32,9 @@ export const MoviesPage = () => {
   }, [movieName]);
 
   const formSubmitHandler = (data) => {
-    //console.log(data.name);
-    //const normalizedNameContact = data.toLowerCase();
     const { name } = data;
     setMovieName(name);
+    setSearchParams({ query: name });
   };
 
   return (

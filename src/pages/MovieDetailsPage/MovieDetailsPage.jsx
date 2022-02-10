@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Outlet, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -8,15 +8,22 @@ import {
   imageMovie,
 } from "../../services/themoviedbApi";
 import MovieCard from "../../components/MovieCard/MovieCard";
-import { Section, Button, LinkButton } from "./MovieDetailsPage.style";
+import {
+  Section,
+  Button,
+  LinkButton,
+  List,
+  LinkAdd,
+  Title,
+} from "./MovieDetailsPage.style";
 
 export const MovieDetailsPage = () => {
   const [items, setItems] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
-  //const [genre, setGenre] = useState("");
-  //const [error, setError] = useState(null);
+
   const { movieId } = useParams();
-  /* console.log(movieId); */
+  const location = useLocation();
+  console.log("location:", location);
 
   useEffect(() => {
     async function fetch() {
@@ -24,6 +31,7 @@ export const MovieDetailsPage = () => {
         const item = await trendingFetchMoviesById(movieId);
         //console.log("По Id:", item);
         setItems(item);
+
         const imagesUrl = await imageMovie();
         //console.log("imageUrl: ", imagesUrl);
         const baseUrl = imagesUrl.images.base_url;
@@ -33,14 +41,13 @@ export const MovieDetailsPage = () => {
         //console.log(imageUrlOriginal);
         setImageUrl(imageUrlOriginal);
       } catch (error) {
-        //setError(error);
         toast.error("There is no review of the video and the cast");
       }
     }
     fetch();
   }, [movieId]);
 
-  console.log(items);
+  //console.log(items);
 
   const {
     backdrop_path,
@@ -52,29 +59,44 @@ export const MovieDetailsPage = () => {
     vote_average,
     overview,
     genres,
-    /* credits,
-    reviews, */
   } = items;
 
   return (
-    <Section>
-      <Button type="button">
-        <LinkButton to="/">Go back</LinkButton>
-      </Button>
-      <MovieCard
-        dataVideo={{
-          backdrop_path,
-          poster_path,
-          name,
-          original_title,
-          release_date,
-          first_air_date,
-          vote_average,
-          overview,
-          genres,
-        }}
-        imageUrl={imageUrl}
-      />
-    </Section>
+    <>
+      <Section>
+        <Button type="button">
+          <LinkButton
+            to={location?.state?.from ?? "/"}
+            state={{ from: location }}
+          >
+            Go back
+          </LinkButton>
+        </Button>
+        <MovieCard
+          dataVideo={{
+            backdrop_path,
+            poster_path,
+            name,
+            original_title,
+            release_date,
+            first_air_date,
+            vote_average,
+            overview,
+            genres,
+          }}
+          imageUrl={imageUrl}
+        />
+      </Section>
+      <Title>Additional information</Title>
+      <List>
+        <li>
+          <LinkAdd to={`/movies/${movieId}/cast`}> Cast</LinkAdd>
+        </li>
+        <li>
+          <LinkAdd to={`/movies/${movieId}/reviews`}> Reviews</LinkAdd>
+        </li>
+      </List>
+      <Outlet />
+    </>
   );
 };

@@ -1,4 +1,4 @@
-import createGlobalStyle from 'styled-components';
+import createGlobalStyle from "styled-components";
 
 export const Container = createGlobalStyle.div`
 
@@ -29,6 +29,7 @@ ol {
 }
 img {
   display: block;
+ 
 }
 /*-------------Body--------------*/
 body {

@@ -7,7 +7,7 @@ const TrendingListItem = ({ data }) => {
 
   /* console.log(data); */
   return (
-    <ListItemStyle key={id}>
+    <ListItemStyle>
       <LinkStyle to={`/movies/${id}`}>{original_title || name}</LinkStyle>
     </ListItemStyle>
   );
