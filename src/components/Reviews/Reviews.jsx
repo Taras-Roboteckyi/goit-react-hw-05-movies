@@ -11,13 +11,13 @@ export const Reviews = () => {
   const [reviews, setReviews] = useState([]);
 
   const { movieId } = useParams();
-  console.log(reviews);
+  //console.log(reviews);
 
   useEffect(() => {
     async function fetch() {
       try {
         const item = await trendingFetchMoviesById(movieId);
-        console.log("По Id:", item);
+        //console.log("По Id:", item);
         setReviews(item.reviews.results);
       } catch (error) {
         toast.error("Oops!");

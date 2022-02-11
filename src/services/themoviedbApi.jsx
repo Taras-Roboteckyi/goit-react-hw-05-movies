@@ -21,7 +21,7 @@ export const imageMovie = async () => {
 
 export const searchFetchMovie = async (query) => {
   const response = await axios.get(
-    `/search/movie?api_key=${key}&language=en-US&include_adult=false&query=${query}&append_to_response=credits,reviews`
+    `/search/movie?api_key=${key}&language=en-US&include_adult=false&query=${query}`
   );
   return response.data;
 };

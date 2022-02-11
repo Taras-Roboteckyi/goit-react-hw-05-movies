@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+
 import { useParams, Outlet, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,6 +16,8 @@ import {
   List,
   LinkAdd,
   Title,
+  Arrow,
+  ArrowInfo,
 } from "./MovieDetailsPage.style";
 
 export const MovieDetailsPage = () => {
@@ -23,7 +26,7 @@ export const MovieDetailsPage = () => {
 
   const { movieId } = useParams();
   const location = useLocation();
-  console.log("location:", location);
+  //console.log("location:", location);
 
   useEffect(() => {
     async function fetch() {
@@ -65,12 +68,8 @@ export const MovieDetailsPage = () => {
     <>
       <Section>
         <Button type="button">
-          <LinkButton
-            to={location?.state?.from ?? "/"}
-            state={{ from: location }}
-          >
-            Go back
-          </LinkButton>
+          <Arrow />
+          <LinkButton to={location?.state?.from ?? "/"}>Go back</LinkButton>
         </Button>
         <MovieCard
           dataVideo={{
@@ -88,12 +87,17 @@ export const MovieDetailsPage = () => {
         />
       </Section>
       <Title>Additional information</Title>
+
       <List>
         <li>
-          <LinkAdd to={`/movies/${movieId}/cast`}> Cast</LinkAdd>
+          <LinkAdd to={`cast`} state={{ from: location?.state?.from }}>
+            Cast <ArrowInfo />
+          </LinkAdd>
         </li>
         <li>
-          <LinkAdd to={`/movies/${movieId}/reviews`}> Reviews</LinkAdd>
+          <LinkAdd to={`reviews`} state={{ from: location?.state?.from }}>
+            Reviews <ArrowInfo />
+          </LinkAdd>
         </li>
       </List>
       <Outlet />

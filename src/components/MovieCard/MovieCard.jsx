@@ -1,11 +1,11 @@
-//import PropTypes from 'prop-types';
-
-//import { Link } from "react-router-dom";
-//import { useState, useEffect } from "react";
-
-//import ContactListItem from '../ContactListItem/ContactListItem';
 import img from "../../images/no-poster1.png";
-import { Section, Image, ImageContainer } from "./MovieCard.styled";
+import {
+  Section,
+  Image,
+  ImageContainer,
+  Title,
+  TextGenres,
+} from "./MovieCard.styled";
 
 const MovieCard = ({ dataVideo, imageUrl }) => {
   const {
@@ -42,15 +42,19 @@ const MovieCard = ({ dataVideo, imageUrl }) => {
         <Image src={isPosterPath(poster_path)} alt="" />
       </ImageContainer>
       <div>
-        <h1>
+        <Title>
           {original_title || name} ({filmYear.slice(0, 4)})
-        </h1>
+        </Title>
         <p>User score: {Math.round((vote_average * 100) / 10)}%</p>
         <h2>Overviev</h2>
         <p>{overview}</p>
         <h3>Genres</h3>
         {/* {genres.length === 0 && <p>No information about genres</p>} */}
-        {genres && <p>{genres.map((genre) => genre.name).join(", ")}</p>}
+        {genres && (
+          <TextGenres>
+            {genres.map((genre) => genre.name).join(", ")}
+          </TextGenres>
+        )}
       </div>
     </Section>
   );

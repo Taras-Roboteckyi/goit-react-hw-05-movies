@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-import { Сharacter } from "./CastListItem.styled";
+import { Сharacter, ListItem, Name, Image } from "./CastListItem.styled";
 import img from "../../images/no-poster1.png";
 
 const CastListItem = ({ dataActor }) => {
@@ -12,14 +12,20 @@ const CastListItem = ({ dataActor }) => {
     }
     return `${img}`;
   };
+  const isCharacter = () => {
+    if (!character) {
+      return "No information";
+    }
+    return character;
+  };
 
-  /* console.log(data); */
+  //console.log(character);
   return (
-    <li>
-      <img src={isPosterPath(profile_path)} alt="" width="200" />
-      <p>{original_name}</p>
-      <Сharacter>Сharacter: {character}</Сharacter>
-    </li>
+    <ListItem>
+      <Image src={isPosterPath(profile_path)} alt="" />
+      <Name>{original_name}</Name>
+      <Сharacter>Сharacter: {isCharacter()}</Сharacter>
+    </ListItem>
   );
 };
 

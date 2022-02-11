@@ -37,7 +37,9 @@ export const Button = styled.button`
   background-color: yellow;
 
   :hover {
+    color: white;
     background-color: royalblue;
     transition: background-color 500ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: color 500ms cubic-bezier(0.4, 0, 0.2, 1);
   }
 `;

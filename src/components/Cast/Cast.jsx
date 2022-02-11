@@ -1,13 +1,17 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import ClockLoader from "react-spinners/ClockLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Spinner } from "../../App.styled";
 
 import { trendingFetchMoviesById } from "../../services/themoviedbApi";
 import CastListItem from "./CastListItem";
+import { List, TextInfo } from "./CastListItem.styled";
 
 export const Cast = () => {
   const [actors, setActors] = useState([]);
+  const [loading, setLoading] = useState(false);
   const { movieId } = useParams();
   //console.log(actors);
 
@@ -17,8 +21,11 @@ export const Cast = () => {
         const item = await trendingFetchMoviesById(movieId);
         // console.log("По Id:", item);
         setActors(item.credits.cast);
+        setLoading(true);
       } catch (error) {
         toast.error("Oops!");
+      } finally {
+        setLoading(false);
       }
     }
     fetch();
@@ -26,16 +33,19 @@ export const Cast = () => {
 
   return (
     <section>
-      {actors.length === 0 && <p>No information about the actors </p>}
+      {actors.length === 0 && (
+        <TextInfo>No information about the actors </TextInfo>
+      )}
+      {loading && <ClockLoader css={Spinner} size={50} />}
       {actors && (
-        <ul>
+        <List>
           {actors.map(({ id, character, original_name, profile_path }) => (
             <CastListItem
               key={id}
               dataActor={{ character, original_name, profile_path }}
             />
           ))}
-        </ul>
+        </List>
       )}
     </section>
   );

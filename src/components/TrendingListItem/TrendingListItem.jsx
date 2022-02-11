@@ -2,13 +2,15 @@ import PropTypes from "prop-types";
 
 import { ListItemStyle, LinkStyle } from "./TrendingListItem.styled";
 
-const TrendingListItem = ({ data }) => {
+const TrendingListItem = ({ data, location }) => {
   const { id, original_title, name } = data;
 
   /* console.log(data); */
   return (
     <ListItemStyle>
-      <LinkStyle to={`/movies/${id}`}>{original_title || name}</LinkStyle>
+      <LinkStyle to={`/movies/${id}`} state={{ from: location }}>
+        {original_title || name}
+      </LinkStyle>
     </ListItemStyle>
   );
 };
