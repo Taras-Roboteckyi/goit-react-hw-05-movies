@@ -17,11 +17,11 @@ export const Cast = () => {
 
   useEffect(() => {
     async function fetch() {
+      setLoading(true);
       try {
         const item = await trendingFetchMoviesById(movieId);
         // console.log("По Id:", item);
         setActors(item.credits.cast);
-        setLoading(true);
       } catch (error) {
         toast.error("Oops!");
       } finally {
